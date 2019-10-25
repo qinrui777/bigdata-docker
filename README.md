@@ -79,6 +79,7 @@ schematool -dbType derby -initSchema
 nohup hive --service metastore &
 nohup hiveserver2 &
 ```
+> 等待hive启动，**2min** 后再测试以下命令
 
 hive server2 连接测试, 在 **master node** 上执行   
 `beeline -u jdbc:hive2://localhost:10000/default -n hive`
