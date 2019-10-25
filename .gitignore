@@ -1,0 +1,7 @@
+*.tar.gz
+build-env/apache-hive*
+build-env/hadoop*
+build-env/tez*
+hd-container/jdk*
+.DS_Store
+.idea

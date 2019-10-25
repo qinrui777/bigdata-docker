@@ -1,0 +1,92 @@
+version: '3'
+services:
+  federation-master1:
+    image: hd-container:1.7
+    hostname: hadoop-master1
+    ports:
+      - 8088:8088
+      - 8042:8042
+      - 10000:10000
+      - 50070:50070
+    extra_hosts:
+      - "hadoop-slave1:172.19.0.11"
+      - "hadoop-slave2:172.19.0.12"
+    networks:
+      hd-net:
+        ipv4_address: 172.19.0.10
+    volumes:
+      - ./script:/opt/script
+      - ./etc/hadoop:/etc/hadoop
+      - ./etc/hive:/etc/hive
+      - ./hadoop-3.1.2:/opt/hadoop
+      - ./apache-hive-3.1.2-bin:/opt/hive
+    environment:
+       HADOOP_HOME: /opt/hadoop
+       HADOOP_CONF_DIR: /etc/hadoop
+       HADOOP_LOG_DIR: /var/log/hadoop
+       YARN_LOG_DIR: /var/log/yarn
+       YARN_CONF_DIR: /etc/hadoop
+       HIVE_HOME: /opt/hive
+       HIVE_CONF_DIR: /etc/hive
+  federation-slave1:
+    image: hd-container:1.7
+    hostname: hadoop-slave1
+    ports:
+      - 8043:8042
+    extra_hosts:
+      - "hadoop-master1:172.19.0.10"
+      - "hadoop-slave2:172.19.0.12"
+    networks:
+      hd-net:
+        ipv4_address: 172.19.0.11
+    volumes:
+      - ./script:/opt/script
+      - ./etc/hadoop:/etc/hadoop
+      - ./etc/hadoop-3.1.2:/opt/hadoop
+    environment:
+       HADOOP_HOME: /opt/hadoop
+       HADOOP_CONF_DIR: /etc/hadoop
+       HADOOP_LOG_DIR: /var/log/hadoop
+       YARN_CONF_DIR: /etc/hadoop
+       YARN_LOG_DIR: /var/log/yarn
+  federation-slave2:
+    image: hd-container:1.7
+    hostname: hadoop-slave2
+    ports:
+      - 8044:8042
+    extra_hosts:
+      - "hadoop-master1:172.19.0.10"
+      - "hadoop-slave1:172.19.0.11"
+    networks:
+      hd-net:
+        ipv4_address: 172.19.0.12
+    volumes:
+      - ./script:/opt/script
+      - ./etc/hadoop:/etc/hadoop
+      - ./etc/hadoop-3.1.2:/opt/hadoop
+    environment:
+       HADOOP_HOME: /opt/hadoop
+       HADOOP_CONF_DIR: /etc/hadoop
+       HADOOP_LOG_DIR: /var/log/hadoop
+       YARN_CONF_DIR: /etc/hadoop
+       YARN_LOG_DIR: /var/log/yarn
+  zeppelin:
+    image: hd-container:1.7
+    hostname: zeppelin
+    ports:
+      - 18080:18080
+    extra_hosts:
+      - "hadoop-master1:172.19.0.10"
+      - "hadoop-slave1:172.19.0.11"
+      - "hadoop-slave1:172.19.0.12"
+    networks:
+      hd-net:
+        ipv4_address: 172.19.0.13
+    volumes:
+      - ~/Dev/big-data/zeppelin-0.8.2-bin-netinst:/opt/zeppelin
+networks:
+  hd-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
