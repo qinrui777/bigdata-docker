@@ -2,6 +2,7 @@
 build-env/apache-hive*
 build-env/hadoop*
 build-env/tez*
+build-env/zeppelin*
 hd-container/jdk*
 .DS_Store
 .idea
