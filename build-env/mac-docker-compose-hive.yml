@@ -42,7 +42,7 @@ services:
     volumes:
       - ./script:/opt/script
       - ./etc/hadoop:/etc/hadoop
-      - ./etc/hadoop-3.1.2:/opt/hadoop
+      - ./hadoop-3.1.2:/opt/hadoop
     environment:
        HADOOP_HOME: /opt/hadoop
        HADOOP_CONF_DIR: /etc/hadoop
@@ -63,7 +63,7 @@ services:
     volumes:
       - ./script:/opt/script
       - ./etc/hadoop:/etc/hadoop
-      - ./etc/hadoop-3.1.2:/opt/hadoop
+      - ./hadoop-3.1.2:/opt/hadoop
     environment:
        HADOOP_HOME: /opt/hadoop
        HADOOP_CONF_DIR: /etc/hadoop
@@ -83,7 +83,7 @@ services:
       hd-net:
         ipv4_address: 172.19.0.13
     volumes:
-      - ~/Dev/big-data/zeppelin-0.8.2-bin-netinst:/opt/zeppelin
+      - ./zeppelin-0.8.2-bin-netinst:/opt/zeppelin
 networks:
   hd-net:
     driver: bridge

@@ -1,3 +1,4 @@
+利用自定义的 docker 镜像，搭建 本地基于docker container的hadoop集群（为了简易搭建，牺牲了安全性，不适用于生产环境，切记！！！）
 
 ### 一、前提准备
 
@@ -5,17 +6,17 @@
 拷贝到 hd-container 目录下(利用Dockerfile制作镜像的时候要用到,注意两边的版本号一致)
 ##### 1.2 下载 apache-hive-3.1.2-bin.tar.gz  
    `wget http://apache.01link.hk/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz`   
-   拷贝到 目录 `build-env/etc` 下，并解压 
+   拷贝到 目录 `build-env/` 下，并解压 
 ##### 1.3 下载 hadoop-3.1.2.tar.gz   
 `wget https://archive.apache.org/dist/hadoop/common/hadoop-3.1.2/hadoop-3.1.2.tar.gz`  
-拷贝到 目录 `build-env/etc` 下，并解压 
+拷贝到 目录 `build-env/` 下，并解压 
 ##### 1.4 制作 docker 构建
   ```bash
   git clone https://github.com/qinrui777/bigdata-docker.git
   cd bigdata-docker
   cd  hd-container &&  docker build -t hd-container:1.X .
   ```
-  > 等待5min
+  > 等待5min，修改对应 build-env/xxx-docker-compose.yml 文件中的镜像版本
 
 ### 二、节点预览
 
@@ -57,6 +58,13 @@ source /opt/script/bigdata_env.sh
 # 启动slave
 sh /opt/script/start-components.sh slave
 ```
+
+- 监控hdfs界面地址 -> http://localhost:50070
+
+- 监控yarn任务执行状况界面地址 -> http://localhost:8088
+
+
+>[more hadoop 3 default ports](https://www.stefaanlippens.net/hadoop-3-default-ports.html)
 
 ##### 3.3 初始化hive
 
@@ -113,6 +121,9 @@ docker-compose -p bd -f mac-docker-compose-hive.yml down -v
 善意提醒提高docker container 的内存大小，被坑了好久。
 
 ### 参考2: hadoop 常用命令
+
+
+[Hadoop HDFS Cheat Sheet](https://linoxide.com/linux-how-to/hadoop-commands-cheat-sheet/)
 
 `hdfs namenode -format`
 
